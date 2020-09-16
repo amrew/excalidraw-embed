@@ -128,4 +128,5 @@ export interface ExcalidrawProps {
     viewBackgroundColor: string;
   };
   zoom?: number;
+  readonly?: boolean;
 }

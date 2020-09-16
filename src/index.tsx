@@ -133,7 +133,6 @@ function ExcalidrawApp() {
             user={user}
             onUsernameChange={onUsernameChange}
             options={options}
-            zoom={0.6}
           />
         </InitializeApp>
       </IsMobileProvider>

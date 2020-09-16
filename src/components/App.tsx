@@ -297,7 +297,7 @@ class App extends React.Component<ExcalidrawProps, AppState> {
       offsetTop,
       offsetLeft,
     } = this.state;
-    const { onUsernameChange } = this.props;
+    const { onUsernameChange, readonly } = this.props;
 
     const canvasScale = window.devicePixelRatio;
 
@@ -338,26 +338,41 @@ class App extends React.Component<ExcalidrawProps, AppState> {
           lng={getLanguage().lng}
         />
         <main>
-          <canvas
-            id="canvas"
-            style={{
-              width: canvasDOMWidth,
-              height: canvasDOMHeight,
-            }}
-            width={canvasWidth}
-            height={canvasHeight}
-            ref={this.handleCanvasRef}
-            onContextMenu={this.handleCanvasContextMenu}
-            onPointerDown={this.handleCanvasPointerDown}
-            onDoubleClick={this.handleCanvasDoubleClick}
-            onPointerMove={this.handleCanvasPointerMove}
-            onPointerUp={this.removePointer}
-            onPointerCancel={this.removePointer}
-            onTouchMove={this.handleTouchMove}
-            onDrop={this.handleCanvasOnDrop}
-          >
-            {t("labels.drawingCanvas")}
-          </canvas>
+          {!readonly ? (
+            <canvas
+              id="canvas"
+              style={{
+                width: canvasDOMWidth,
+                height: canvasDOMHeight,
+              }}
+              width={canvasWidth}
+              height={canvasHeight}
+              ref={this.handleCanvasRef}
+              onContextMenu={this.handleCanvasContextMenu}
+              onPointerDown={this.handleCanvasPointerDown}
+              onDoubleClick={this.handleCanvasDoubleClick}
+              onPointerMove={this.handleCanvasPointerMove}
+              onPointerUp={this.removePointer}
+              onPointerCancel={this.removePointer}
+              onTouchMove={this.handleTouchMove}
+              onDrop={this.handleCanvasOnDrop}
+            >
+              {t("labels.drawingCanvas")}
+            </canvas>
+          ) : (
+            <canvas
+              id="canvas"
+              style={{
+                width: canvasDOMWidth,
+                height: canvasDOMHeight,
+              }}
+              width={canvasWidth}
+              height={canvasHeight}
+              ref={this.handleCanvasRef}
+            >
+              {t("labels.drawingCanvas")}
+            </canvas>
+          )}
         </main>
       </div>
     );
