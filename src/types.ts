@@ -127,4 +127,5 @@ export interface ExcalidrawProps {
     zenModeEnabled: boolean;
     viewBackgroundColor: string;
   };
+  zoom?: number;
 }

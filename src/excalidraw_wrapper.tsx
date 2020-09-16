@@ -21,6 +21,7 @@ const Excalidraw = (props: ExcalidrawProps) => {
     options,
     version,
     value,
+    zoom,
   } = props;
   useEffect(() => {
     const handleTouchMove = (event: TouchEvent) => {
@@ -51,6 +52,7 @@ const Excalidraw = (props: ExcalidrawProps) => {
         options={options}
         version={version}
         value={value}
+        zoom={zoom}
       />
     </InitializeApp>
   );

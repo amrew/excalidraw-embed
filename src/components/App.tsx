@@ -257,13 +257,14 @@ class App extends React.Component<ExcalidrawProps, AppState> {
 
   constructor(props: ExcalidrawProps) {
     super(props);
-    const defaultAppState = getDefaultAppState();
     const {
       width,
       height,
       options: { zenModeEnabled, viewBackgroundColor },
       user,
+      zoom,
     } = props;
+    const defaultAppState = getDefaultAppState({ zoom: zoom || 1 });
     this.state = {
       ...defaultAppState,
       isLoading: true,
@@ -495,9 +496,14 @@ class App extends React.Component<ExcalidrawProps, AppState> {
 
     const { initialData } = this.props;
 
-    let scene = await loadScene(null, initialData, undefined, () =>
-      // force rerender. can't use this.forceUpdate
-      this.setState({ ...this.state }),
+    let scene = await loadScene(
+      null,
+      initialData,
+      this.state.zoom,
+      undefined,
+      () =>
+        // force rerender. can't use this.forceUpdate
+        this.setState({ ...this.state }),
     );
 
     let isCollaborationScene = !!getCollaborationLinkData(window.location.href);
@@ -510,9 +516,14 @@ class App extends React.Component<ExcalidrawProps, AppState> {
       ) {
         // Backwards compatibility with legacy url format
         if (id) {
-          scene = await loadScene(id, initialData);
+          scene = await loadScene(id, initialData, this.state.zoom);
         } else if (jsonMatch) {
-          scene = await loadScene(jsonMatch[1], initialData, jsonMatch[2]);
+          scene = await loadScene(
+            jsonMatch[1],
+            initialData,
+            this.state.zoom,
+            jsonMatch[2],
+          );
         }
         if (!isCollaborationScene) {
           window.history.replaceState({}, "Excalidraw", window.location.origin);

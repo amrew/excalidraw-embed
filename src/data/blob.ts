@@ -33,7 +33,7 @@ export const loadFromBlob = async (blob: any, appState?: AppState) => {
   }
 
   const contents = await loadFileContents(blob);
-  const defaultAppState = getDefaultAppState();
+  const defaultAppState = getDefaultAppState({ zoom: appState?.zoom || 1 });
   let elements = [];
   let _appState = appState || defaultAppState;
   try {

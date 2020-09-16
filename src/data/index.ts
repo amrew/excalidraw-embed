@@ -236,7 +236,7 @@ export const importFromBackend = async (
   privateKey: string | undefined,
 ) => {
   let elements: readonly ExcalidrawElement[] = [];
-  let appState = getDefaultAppState();
+  let appState = getDefaultAppState({ zoom: 1 });
 
   try {
     const response = await fetch(
@@ -353,7 +353,7 @@ export const exportCanvas = async (
       ...appState,
       viewBackgroundColor: exportBackground
         ? appState.viewBackgroundColor
-        : getDefaultAppState().viewBackgroundColor,
+        : getDefaultAppState({ zoom: appState.zoom }).viewBackgroundColor,
     });
   }
 
@@ -366,6 +366,7 @@ export const exportCanvas = async (
 export const loadScene = async (
   id: string | null,
   initialData: readonly ExcalidrawElement[],
+  zoom: number,
   privateKey?: string,
   forceUpdate?: () => void,
 ) => {
@@ -375,7 +376,7 @@ export const loadScene = async (
     // extra care not to leak it
     data = await importFromBackend(id, privateKey);
   } else {
-    data = restore(initialData, getDefaultAppState(), forceUpdate);
+    data = restore(initialData, getDefaultAppState({ zoom }), forceUpdate);
   }
 
   return {

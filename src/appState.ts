@@ -8,10 +8,11 @@ import {
   DEFAULT_TEXT_ALIGN,
 } from "./constants";
 
-export const getDefaultAppState = (): Omit<
-  AppState,
-  "offsetTop" | "offsetLeft"
-> => {
+export const getDefaultAppState = ({
+  zoom = 1,
+}: {
+  zoom: number;
+}): Omit<AppState, "offsetTop" | "offsetLeft"> => {
   return {
     isLoading: false,
     errorMessage: null,
@@ -47,7 +48,7 @@ export const getDefaultAppState = (): Omit<
     isResizing: false,
     isRotating: false,
     selectionElement: null,
-    zoom: 1,
+    zoom: zoom,
     openMenu: null,
     lastPointerDownWith: "mouse",
     selectedElementIds: {},
