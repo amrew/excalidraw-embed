@@ -60,7 +60,7 @@ registerFont("./public/Cascadia.ttf", { family: "Cascadia" });
 const canvas = exportToCanvas(
   elements as any,
   {
-    ...getDefaultAppState(),
+    ...getDefaultAppState({ zoom: 1 }),
     offsetTop: 0,
     offsetLeft: 0,
   },

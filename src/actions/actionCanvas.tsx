@@ -43,7 +43,7 @@ export const actionClearCanvas = register({
         newElementWith(element, { isDeleted: true }),
       ),
       appState: {
-        ...getDefaultAppState(),
+        ...getDefaultAppState({ zoom: appState.zoom }),
         username: appState.username,
       },
       commitToHistory: true,
