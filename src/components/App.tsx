@@ -369,6 +369,11 @@ class App extends React.Component<ExcalidrawProps, AppState> {
               width={canvasWidth}
               height={canvasHeight}
               ref={this.handleCanvasRef}
+              onPointerDown={this.handleCanvasPointerDown}
+              onPointerMove={this.handleCanvasPointerMove}
+              onPointerUp={this.removePointer}
+              onPointerCancel={this.removePointer}
+              onTouchMove={this.handleTouchMove}
             >
               {t("labels.drawingCanvas")}
             </canvas>
@@ -1942,11 +1947,13 @@ class App extends React.Component<ExcalidrawProps, AppState> {
 
     resetCursor();
 
-    this.startTextEditing({
-      sceneX,
-      sceneY,
-      insertAtParentCenter: !event.altKey,
-    });
+    if (!this.props.readonly) {
+      this.startTextEditing({
+        sceneX,
+        sceneY,
+        insertAtParentCenter: !event.altKey,
+      });
+    }
   };
 
   private handleCanvasPointerMove = (
@@ -2127,20 +2134,22 @@ class App extends React.Component<ExcalidrawProps, AppState> {
         return;
       }
     }
-    const hitElement = getElementAtPosition(
-      elements,
-      this.state,
-      scenePointerX,
-      scenePointerY,
-      this.state.zoom,
-    );
-    if (this.state.elementType === "text") {
-      document.documentElement.style.cursor = isTextElement(hitElement)
-        ? CURSOR_TYPE.TEXT
-        : CURSOR_TYPE.CROSSHAIR;
-    } else {
-      document.documentElement.style.cursor =
-        hitElement && !isOverScrollBar ? "move" : "";
+    if (!this.props.readonly) {
+      const hitElement = getElementAtPosition(
+        elements,
+        this.state,
+        scenePointerX,
+        scenePointerY,
+        this.state.zoom,
+      );
+      if (this.state.elementType === "text") {
+        document.documentElement.style.cursor = isTextElement(hitElement)
+          ? CURSOR_TYPE.TEXT
+          : CURSOR_TYPE.CROSSHAIR;
+      } else {
+        document.documentElement.style.cursor =
+          hitElement && !isOverScrollBar ? "move" : "";
+      }
     }
   };
 
@@ -2154,7 +2163,9 @@ class App extends React.Component<ExcalidrawProps, AppState> {
   ) => {
     event.persist();
 
-    this.maybeOpenContextMenuAfterPointerDownOnTouchDevices(event);
+    if (!this.props.readonly) {
+      this.maybeOpenContextMenuAfterPointerDownOnTouchDevices(event);
+    }
     this.maybeCleanupAfterMissingPointerUp(event);
 
     if (isPanning) {
@@ -2204,6 +2215,10 @@ class App extends React.Component<ExcalidrawProps, AppState> {
     }
 
     this.clearSelectionIfNotUsingSelection();
+
+    if (this.props.readonly) {
+      return;
+    }
 
     if (this.handleSelectionOnPointerDown(event, pointerDownState)) {
       return;
