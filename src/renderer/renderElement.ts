@@ -124,6 +124,19 @@ const drawElementOnCanvas = (
       img.src = element.src;
       img.width = width;
       img.height = height;
+
+      // insert square stroke
+      const placeholder = new Path2D();
+      placeholder.rect(scale, scale, element.width - 4, element.height - 4);
+      context.fillStyle = "#ccc";
+      context.fill(placeholder);
+      // insert text
+      context.fillStyle = "#333";
+      context.fillText(
+        "Memuat Gambar...",
+        scale + element.width / 2 - 50,
+        scale + element.height / 2,
+      );
       break;
     }
     default: {
