@@ -859,6 +859,13 @@ class App extends React.Component<ExcalidrawProps, AppState> {
       prevProps.version !== this.props.version
     ) {
       this.updateElements(this.props.value);
+      this.setState({
+        ...calculateScrollCenter(
+          this.scene.getElementsIncludingDeleted(),
+          this.state,
+          this.canvas,
+        ),
+      });
     }
 
     history.record(this.state, this.scene.getElementsIncludingDeleted());
