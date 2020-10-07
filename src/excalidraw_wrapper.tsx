@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import { InitializeApp } from "./components/InitializeApp";
 import App from "./components/App";
@@ -24,21 +24,6 @@ const Excalidraw = (props: ExcalidrawProps) => {
     zoom,
     readonly,
   } = props;
-  useEffect(() => {
-    const handleTouchMove = (event: TouchEvent) => {
-      // @ts-ignore
-      if (event.scale !== 1) {
-        event.preventDefault();
-      }
-    };
-
-    document.addEventListener("touchmove", handleTouchMove, { passive: false });
-
-    return () => {
-      // @ts-ignore
-      document.removeEventListener("touchMove", handleTouchMove);
-    };
-  }, []);
 
   return (
     <InitializeApp>
